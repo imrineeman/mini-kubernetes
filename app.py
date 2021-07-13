@@ -19,15 +19,12 @@ def create_service():
         data = json.loads(request.data)
     except JSONDecodeError:
         return jsonify({'error':'Bad request'}),400
-
     if 'image' not in data or not 'detached' in data or not 'publish' in data:
         return jsonify({'error':'Bad Request'}),400
-    
     res = docker_service.create(data['image'],data['detached'],data['publish'])
     if res:
         print(res)
         return jsonify(res),400
-
     return jsonify({'status': 'Successfuly created'}),201
 
 # Get latest service (optional - get latest by image)
@@ -35,10 +32,8 @@ def create_service():
 @app.route("/services/latest/<image>")
 def get_latest(image):
     res = docker_service.get_latest(image)
-
     if not res:
         return jsonify({'error':'Not found'}),404
-        
     data = json.loads(docker_service.get_latest(image))
     return jsonify(data)
     
