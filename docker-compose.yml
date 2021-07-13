@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  hello-world:
+    image: "hello-world"
+  nginx1:
+    image: "nginx"
+    ports:
+      - "80"
+  nginx2:
+    image: "nginx"
+    ports:
+      - "80"
+  nginx3:
+    image: "nginx"
+    ports:
+      - "80"
+  nginx4:
+      image: "nginx"
+      ports:
+        - "80"
