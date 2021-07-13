@@ -3,6 +3,11 @@ from services import docker_service
 import json
 app = Flask(__name__)
 
+
+@app.route("/")
+def homepage():
+    return "Mini Kubernetes!"
+
 # Create new service
 @app.route("/services", 
 methods = ['POST'])
@@ -16,7 +21,6 @@ def create_service():
     
     res = docker_service.create(data['image'])
     if res:
-        print(res)
         return jsonify(res),400
     return jsonify({'status': 'Successfuly created'}),201
 
@@ -32,3 +36,5 @@ def get_latest(image):
     data = json.loads(docker_service.get_latest(image))
     return jsonify(data)
     
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

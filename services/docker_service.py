@@ -8,7 +8,7 @@ def get_latest(image):
         return run_command('docker ps --format="{{json .}}" -l')
     return run_command(f'docker ps --filter "ancestor={image}" --format="{{{{json .}}}}" -l')
 
-def create(image='hello-world'):
+def create(image):
     try:
         run_command(f'docker run {image}')
     except subprocess.CalledProcessError:
