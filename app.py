@@ -2,7 +2,21 @@ from json.decoder import JSONDecodeError
 from flask import Flask , request, jsonify
 from services import docker_service
 import json
+from flask_apscheduler import APScheduler
+
 app = Flask(__name__)
+
+# Services health check logic
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+INTERVAL_TASK_ID = 'interval-task-id'
+
+scheduler.add_job(
+    id=INTERVAL_TASK_ID,
+     func =docker_service.health_check,
+      trigger='interval',
+       seconds=10)
 
 #Homepage
 @app.route("/")
@@ -39,3 +53,4 @@ def get_latest(image):
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+    

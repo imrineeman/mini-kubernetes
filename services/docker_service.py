@@ -17,10 +17,13 @@ def create(image,detached,publish):
         except subprocess.CalledProcessError:
             return {'error':'Command line error'}
         return 
-
     detached = '-d' if detached else ''
     try:
         run_command(f'docker run {detached} {publish} {image}')
     except subprocess.CalledProcessError:
         return {'error':'Command line error'}
     return 
+
+def health_check():
+    return run_command(f'docker-compose up -d')
+  
