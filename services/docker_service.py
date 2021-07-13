@@ -26,3 +26,4 @@ def create(image,detached,publish):
 
 def health_check():
     return run_command(f'docker-compose up -d')
+  
