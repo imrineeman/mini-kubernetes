@@ -1,7 +1,5 @@
-from json.decoder import JSONDecodeError
 from flask import Flask , request, jsonify
 from services import docker
-import json
 
 app = Flask(__name__)
 
@@ -13,13 +11,18 @@ def homepage():
 # Get all services
 @app.route('/services')
 def get_all():
-    data = json.loads(docker.get_all())
+    data = docker.get_all()
+    if 'error' in data:
+        return jsonify(data),500
     return jsonify(data),200
 
 # Get all running services
 @app.route('/services/running')
 def get_all_running():
-    data = json.loads(docker.get_all())
+    data = docker.get_all()
+    if 'error' in data:
+        return jsonify(data),500
+
     filtered_data = []
 
     for i in range(len(data)):
@@ -32,13 +35,15 @@ def get_all_running():
 # Get by ID
 @app.route('/services/<id>')
 def get_by_id(id):
-    data = json.loads(docker.get_all())
+    data = docker.get_all()
+    if 'error' in data:
+        return jsonify(data),500
+       
     filtered_data = []
-
     for i in range(len(data)):
-        print(data[i])
         if data[i]['ID'] == id:
             filtered_data.append(data[i])
+
     if not filtered_data:
         return jsonify({'error':'Invalid ID'}),404
     return jsonify(filtered_data),200
@@ -46,11 +51,11 @@ def get_by_id(id):
 # Get by name
 @app.route('/services/name/<name>')
 def get_by_name(name):
-    data = json.loads(docker.get_all())
+    data = docker.get_all()
+    if 'error' in data:
+        return jsonify(data),500
     filtered_data = []
-    print(data)
     for i in range(len(data)):
-        print(data[i])
         if data[i]['Names'] == name:
             filtered_data.append(data[i])
 
@@ -65,33 +70,35 @@ methods = ['POST'])
 def create_service():
     if not request.data:
         return jsonify({'error':'Bad Request'}),400
-    try:
-        data = json.loads(request.data)
-    except JSONDecodeError:
-        return jsonify({'error':'Bad request'}),400
+    
+    data = docker.get_all()
+    if 'error' in data:
+        return jsonify(data),500
+       
     if 'image' not in data or not 'detached' in data or not 'publish' in data:
         return jsonify({'error':'Bad Request'}),400
     res = docker.create(data['image'],data['detached'],data['publish'])
+    
     if res:
-        print(res)
         return jsonify(res),400
-    return jsonify({'body': 'Successfuly created'}),201
+    return jsonify(res),201
 
 # Get latest service (optional - get latest by image)
 @app.route("/services/latest",defaults ={'image':None})
 @app.route("/services/latest/<image>")
 def get_latest(image):
     res = docker.get_latest(image)
-    if not res:
+    if 'error' in res:
         return jsonify({'error':'Not found'}),404
-    data = json.loads(docker.get_latest(image))
-    return jsonify(data)
-    
+    return jsonify(res),200
+
+# Endpoint for scheduler service - 
 @app.route("/config")
 def refresh_config():
-    docker.ensure_services_alive()
-    return jsonify({'status':'Vital services are up'}),200
+    res = docker.ensure_services_alive()
+    return jsonify(res),200
 
+# Endpoint for scheduler service
 @app.route("/config/reset")
 def periodic_check():
     res=docker.remove_unwanted_services()

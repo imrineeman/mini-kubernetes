@@ -14,4 +14,4 @@ while True:
     BASE_URL = f'http://{CONTROLLER_BASE_URL}:{CONTROLLER_PORT}'
 
     periodic_check= requests.get(f'{BASE_URL}/config')
-    remove_unwanted_services= requests.get(f'{BASE_URL}/config/refresh')
+    remove_unwanted_services= requests.get(f'{BASE_URL}/config/reset')
