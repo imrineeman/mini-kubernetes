@@ -66,8 +66,7 @@ def get_by_name(name):
     return jsonify(filtered_data),200
 
 # Create new services
-@app.route("/services", 
-methods = ['POST'])
+@app.route("/services", methods = ['POST'])
 def create_service():
     if not request.data:
         return jsonify({'error':'Bad Request'}),400
@@ -93,19 +92,19 @@ def get_latest(image):
         return jsonify({'error':'Not found'}),404
     return jsonify(res),200
 
-# Endpoint for scheduler service - 
-@app.route("/config")
-def refresh_config():
+# Update services according to configuration 
+@app.route("/services",methods=['PUT'])
+def put():
     res = docker.ensure_services_alive()
     return jsonify(res),200
 
-# Endpoint for scheduler service
-@app.route("/config/reset")
-def periodic_check():
+# Delete services according to configuration
+@app.route("/services",methods=['DELETE'])
+def delete():
     res=docker.remove_unwanted_services()
     if 'error' in res:
         return res,500
-    return res,200
+    return res,204
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
