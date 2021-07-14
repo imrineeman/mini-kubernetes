@@ -23,9 +23,7 @@ def get_all_running():
     data = docker.get_all()
     if 'error' in data:
         return jsonify(data),500
-
     filtered_data = []
-
     for i in range(len(data)):
         if data[i]['State'] == 'running':
             filtered_data.append(data[i])
@@ -39,12 +37,10 @@ def get_by_id(id):
     data = docker.get_all()
     if 'error' in data:
         return jsonify(data),500
-       
     filtered_data = []
     for i in range(len(data)):
         if data[i]['ID'] == id:
             filtered_data.append(data[i])
-
     if not filtered_data:
         return jsonify({'error':'Invalid ID'}),404
     return jsonify(filtered_data),200
@@ -70,15 +66,12 @@ def get_by_name(name):
 def create_service():
     if not request.data:
         return jsonify({'error':'Bad Request'}),400
-    
     data = json_parser(request.data)
     if 'error' in data:
         return {'error':'Bad Request'},400
-        
     if 'image' not in data or not 'publish' in data:
         return jsonify({'error':'Bad Request'}),400
     res = docker.create(data['image'],data['publish'])
-    
     if res:
         return jsonify(res),400
     return jsonify(res),201
