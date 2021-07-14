@@ -1,8 +1,7 @@
-import subprocess, logging
+import subprocess
 
 def run_command(command):
-    return subprocess.check_output(command, 
-    shell=True)
+    return subprocess.check_output(command, shell=True)
 
 def get_all():
     return run_command("echo ] | (docker ps -a --format '{{json .}}' | paste -sd',' && cat) | (echo [ && cat)")
@@ -27,13 +26,20 @@ def create(image,detached,publish):
         return {'error':'Command line error'}
     return 
 
-def periodic_check():
+def remove_unwanted_services():
+    try:
+        config_services =  run_command(f'docker-compose ps -q').decode("utf-8").split()
+        running_services = run_command('docker inspect --format "{{.Id}}" $(docker ps -q)').decode("utf-8").split()
+        SERVER_CONTAINER_ID = run_command('docker inspect --format "{{.Id}}" $(cat /etc/hostname)').decode("utf-8").rstrip()
 
-    run_command('docker-compose up -d')
-    #config_services =  run_command('docker-compose ps -q').decode("utf-8").split()
-    #running_services = run_command('docker inspect --format "{{.Id}}" $(docker ps -q)').decode("utf-8").split()
+        config_services.append(SERVER_CONTAINER_ID)
+        for service in running_services:
+            if service not in config_services:
+                run_command(f'docker kill {service}')
+    except subprocess.CalledProcessError:
+        return {'error':'Command line error'}
+    return {'status':'Refreshed services'}
 
- #   for i in running_services:
- #       if i not in config_services:
- #           run_command(f'docker stop {i}')
- #           print('Killed service',i) 
+def ensure_services_alive():
+    return run_command('docker-compose up -d')
+
