@@ -22,7 +22,7 @@ To run the project - please build image with this command (if you wish to change
 * **Error Response:**
 
   * **Code:** `404` <br />
-  * **Content:** `{ error : "User doesn't exist" }`
+  * **Content:** `{'error':'Not found'}`
     
 *Show Specific Service*
 ----
@@ -45,10 +45,10 @@ To run the project - please build image with this command (if you wish to change
   
 * **Error Response:**
   * **Code:** `404` <br />
-  * **Content:** `{ error : "Invalid ID" }`
+  * **Content:** `{'error':'Not found'}`
     
   * **Code:** `404` <br />
-  * **Content:** `{ error : "Invalid Name" }`
+  * **Content:** `{'error':'Not found'}`
 
 
 *Show Latest Service*
@@ -72,7 +72,7 @@ To run the project - please build image with this command (if you wish to change
  
 * **Error Response:**
   * **Code:** `404` <br />
-  * **Content:** `{ error : "Invalid ID" }`
+  * **Content:** `{'error':'Not found'}`
     
  *Create New Service*
  ----
@@ -100,5 +100,5 @@ To run the project - please build image with this command (if you wish to change
  
 * **Error Response:**
   * **Code:** `400` <br />
-  * **Content:** `{ error : "Bad Request" }`
+  * **Content:** `{ 'error' : 'Bad Request' }`
 
