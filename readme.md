@@ -1,5 +1,10 @@
 # Mini Kubernetes!
-Repository for Zadara's home assignment
+
+To run the project - please build image with this command (if you wish to change the image's name, please change the environment variable accordingly). </br>
+* `git clone`
+* Run `pip install -r requirements.txt`
+* Run `docker build -t controller:latest` </br>
+* Run `python3 run.py` </br>
 
 ## API Documentation
 *Show All Services*
@@ -85,7 +90,7 @@ Repository for Zadara's home assignment
 * **Data Params**
 
   `image,String` - Image name. </br>
-  `detached,Boolean` - Will the new service run as detached? </br>
+  `detached,Boolean` - Will the new service run as detached? (relevant for up to step 2) </br>
   `publish,Boolean\Int` - Publish the exposed port? (if `True` then publish random port, if `Int` published to the given port number). </br>
   
 * **Success Response:**
