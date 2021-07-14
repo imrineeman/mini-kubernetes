@@ -2,15 +2,8 @@ from json.decoder import JSONDecodeError
 from flask import Flask , request, jsonify
 from services import docker
 import json
-from flask_apscheduler import APScheduler
 
 app = Flask(__name__)
-
-# Services health check logic
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
-INTERVAL_TASK_ID = 'interval-task-id'
 
 #Homepage
 @app.route("/")
