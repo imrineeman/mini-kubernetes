@@ -1,8 +1,6 @@
 # Mini Kubernetes!
 
 To run the project - please build image with this command (if you wish to change the image's name, please change the environment variable accordingly). </br>
-* `git clone`
-* Run `pip install -r requirements.txt`
 * Run `docker build -t controller:latest` </br>
 * Run `python3 run.py` </br>
 
