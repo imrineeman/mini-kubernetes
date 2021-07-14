@@ -1,5 +1,6 @@
 from flask import Flask , request, jsonify
 from services import docker
+from services.common import json_parser
 
 app = Flask(__name__)
 
@@ -71,13 +72,13 @@ def create_service():
     if not request.data:
         return jsonify({'error':'Bad Request'}),400
     
-    data = docker.get_all()
+    data = json_parser(request.data)
     if 'error' in data:
-        return jsonify(data),500
-       
-    if 'image' not in data or not 'detached' in data or not 'publish' in data:
+        return {'error':'Bad Request'},400
+        
+    if 'image' not in data or not 'publish' in data:
         return jsonify({'error':'Bad Request'}),400
-    res = docker.create(data['image'],data['detached'],data['publish'])
+    res = docker.create(data['image'],data['publish'])
     
     if res:
         return jsonify(res),400
