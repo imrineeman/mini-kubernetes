@@ -1,7 +1,8 @@
 # Mini Kubernetes!
 
-To run the project - please build image with this command (if you wish to change the image's name, please change the environment variable accordingly). </br>
-* Run `docker build -t controller:latest` </br>
+To run the project - please build each image with with the specified command under it's relevant directory (if you wish to change the image's name, please change the environment variable accordingly). </br>
+* Run `docker build -t controller:latest .` </br>
+* Run `docker build -t scheduler:latest .` </br>
 * Run `python3 run.py` </br>
 
 ## API Documentation
