@@ -1,10 +1,8 @@
 import subprocess,sys
-from common import json_parser,run_command, SCHEDULER_IMAGE
+from .common import json_parser,run_command, SCHEDULER_IMAGE
 
 def get_all():
-    data = json_parser(
-        run_command(
-            "echo ] | (docker ps -a --format '{{json .}}' | paste -sd',' && cat) | (echo [ && cat)"))
+    data = json_parser(run_command("echo ] | (docker ps -a --format '{{json .}}' | paste -sd',' && cat) | (echo [ && cat)"))
     return data
 
 def get_latest(image):
@@ -12,8 +10,7 @@ def get_latest(image):
         return json_parser(
             run_command('docker ps --format="{{json .}}" -l'))
     return json_parser(
-        run_command(
-            f'docker ps --filter "ancestor={image}" --format="{{{{json .}}}}" -l'))
+        run_command(f'docker ps --filter "ancestor={image}" --format="{{{{json .}}}}" -l'))
 
 def create(image,publish):
     publish = '--publish-all' if publish is True else f'-p {publish}:80' if publish else ''

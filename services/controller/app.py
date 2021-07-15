@@ -1,6 +1,6 @@
 from flask import Flask , request, jsonify
-import docker
-from common import json_parser
+import utils.docker as docker
+from utils.common import json_parser
 
 app = Flask(__name__)
 

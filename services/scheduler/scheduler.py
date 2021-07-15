@@ -1,11 +1,15 @@
 import requests,sys,time
 
-CONTROLLER_BASE_URL = sys.argv[1]
-CONTROLLER_PORT = sys.argv[2]
-SCHEDULER_INTERVALS = int(sys.argv[3])
+def main():
+    CONTROLLER_BASE_URL = sys.argv[1]
+    CONTROLLER_PORT = sys.argv[2]
+    SCHEDULER_INTERVALS = int(sys.argv[3])
+    while True:
+        BASE_URL = f'http://{CONTROLLER_BASE_URL}:{CONTROLLER_PORT}'
+        requests.put(f'{BASE_URL}/services')
+        requests.delete(f'{BASE_URL}/services')
+        time.sleep(SCHEDULER_INTERVALS)
 
-while True:
-    time.sleep(SCHEDULER_INTERVALS)
-    BASE_URL = f'http://{CONTROLLER_BASE_URL}:{CONTROLLER_PORT}'
-    periodic_check= requests.put(f'{BASE_URL}/services')
-    remove_unwanted_services= requests.delete(f'{BASE_URL}/services')
+if __name__ == '__main__':
+    main()
+    
