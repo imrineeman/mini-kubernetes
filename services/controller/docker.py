@@ -1,5 +1,5 @@
-import subprocess
-from services.common import json_parser,run_command
+import subprocess,sys
+from common import json_parser,run_command, SCHEDULER_IMAGE
 
 def get_all():
     data = json_parser(
@@ -31,9 +31,11 @@ def remove_unwanted_services():
             'docker inspect --format "{{.Id}}" $(docker ps -q)').decode("utf-8").split()
         CONTROLLER_CONTAINER_ID = run_command(
             'docker inspect --format "{{.Id}}" $(cat /etc/hostname)').decode("utf-8").rstrip()
-
-        config_services.append(CONTROLLER_CONTAINER_ID)
+        SCHEDULER_CONTAINER_ID = run_command(f'docker inspect --format="{{{{.Id}}}}" $(docker ps --filter "ancestor={SCHEDULER_IMAGE}" -q)').decode("utf-8").rstrip()
         
+        config_services.append(CONTROLLER_CONTAINER_ID)
+        config_services.append(SCHEDULER_CONTAINER_ID)
+
         for service in running_services:
             if service not in config_services:
                 run_command(f'docker kill {service}')

@@ -1,4 +1,7 @@
-import json,subprocess
+import json,subprocess,os
+
+# Environment variables passed from host
+SCHEDULER_IMAGE = os.getenv('SCHEDULER_IMAGE')
 
 def json_parser(data):
     try:

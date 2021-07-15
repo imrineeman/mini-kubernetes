@@ -16,7 +16,10 @@ RUN apk add rust
 RUN apk add cargo
 RUN apk add make
 RUN pip3 install docker-compose
-    
+
+ARG scheduler_image
+ENV SCHEDULER_IMAGE = scheduler_image
+
 EXPOSE 5000
 WORKDIR /app
 

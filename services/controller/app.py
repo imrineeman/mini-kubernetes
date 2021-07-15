@@ -1,6 +1,6 @@
 from flask import Flask , request, jsonify
-from services import docker
-from services.common import json_parser
+import docker
+from common import json_parser
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def homepage():
 def get_all():
     data = docker.get_all()
     if 'error' in data:
-        return jsonify(data),500
+        return jsonify({'error':'Not found'}),404
     return jsonify(data),200
 
 # Get all running services
@@ -22,7 +22,7 @@ def get_all():
 def get_all_running():
     data = docker.get_all()
     if 'error' in data:
-        return jsonify(data),500
+        return jsonify({'error':'Not found'}),404
     filtered_data = []
     for i in range(len(data)):
         if data[i]['State'] == 'running':
@@ -42,7 +42,7 @@ def get_by_id(id):
         if data[i]['ID'] == id:
             filtered_data.append(data[i])
     if not filtered_data:
-        return jsonify({'error':'Invalid ID'}),404
+        return jsonify({'error':'Not found'}),404
     return jsonify(filtered_data),200
 
 # Get by name
@@ -57,7 +57,7 @@ def get_by_name(name):
             filtered_data.append(data[i])
 
     if not filtered_data:
-        return jsonify({'error':'Invalid name'}),404
+        return jsonify({'error':'Not found'}),404
 
     return jsonify(filtered_data),200
 
