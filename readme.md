@@ -5,8 +5,11 @@ The project consists of two services - `controller` and `scheduler`.</br>
 * `scheduler` - a service that sends HTTP request periodically to the `controller`, in order to invoke methods that ensure that the correct services are run on the system. </br>
 
 To run the project - please build each image with with the specified command under it's relevant directory (if you wish to change the image's name, please change the environment variable accordingly). </br>
+* Ensure python3-pip is installed `sudo apt-install python3-pip` </br>
 * Run `docker build -t controller:latest ./services/controller` </br>
-* Run `docker build -t scheduler:latest ./servicer/scheduler` </br>
+* Run `docker build -t scheduler:latest ./services/scheduler` </br>
+* Create virtual environment </br>
+* Run `pip3 install -r requirements.txt` </br>
 * Run `python3 run.py` </br>
 
 ## API Documentation
