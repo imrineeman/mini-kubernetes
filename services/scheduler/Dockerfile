@@ -18,6 +18,8 @@ ENV controller_ip = CONTROLLER_IP
 ENV controller_port = CONTROLLER_PORT
 ENV interval = INTERVAL
 
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 COPY . .
 
 CMD python3 scheduler.py "$controller_ip" "$controller_port" "$interval"
