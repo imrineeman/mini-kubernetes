@@ -2,10 +2,12 @@
 ### A simplified containerized services manager
 The project consists of two services - `controller` and `scheduler`.</br>
 * `controller` - controls all of the relevant micro-services specified in the configuration file (docker-compose.yml), and features a convinient API to fetch relevant data regarding the system's services and operate on the system (e.g. run another service).
-* `scheduler` - a service that sends HTTP request periodically to the `controller`, in order to invoke methods which ensure that the correct services are run on the system. </br>
+* `scheduler` - a service that sends HTTP request periodically to the `controller`, in order to invoke methods which ensure that the correct services are run on the system; 
+* The project was developed on Ubuntu 21.04. </br>
 
 To run the project: </br>
-* Ensure python3-pip is installed `sudo apt-install python3-pip` </br>
+* Ensure `docker` is installed `sudo apt-get install docker-ce docker-ce-cli containerd.io`
+* Ensure `python3-pip` is installed `sudo apt-install python3-pip` </br>
 * Run `python3 run.py` </br>
 
 ## API Documentation
