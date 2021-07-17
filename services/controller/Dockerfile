@@ -17,14 +17,17 @@ RUN apk add cargo
 RUN apk add make
 RUN pip3 install docker-compose
 
-ARG scheduler_image
-ENV SCHEDULER_IMAGE = scheduler_image
-
-EXPOSE 5000
 WORKDIR /app
+
+ARG scheduler_image
+ARG controller_port
+ENV SCHEDULER_IMAGE = scheduler_image
+ENV CONTROLLER_PORT = controller_port
+
+EXPOSE "$controller_port"
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 COPY . .
 
-ENTRYPOINT ["python3","-m","flask","run","--host=0.0.0.0"]
+CMD python3 -m flask run --host="0.0.0.0" --port="$CONTROLLER_PORT"

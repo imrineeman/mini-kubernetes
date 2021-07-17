@@ -14,8 +14,9 @@ def main():
     # Load environment Variables
     logging.info("Loading env variables")
     load_dotenv()
+    
     PORT = os.getenv('CONTROLLER_PORT')
-    INTERVALS = os.getenv('SCHEDULER_INTERVALS')
+    INTERVAL = os.getenv('SCHEDULER_INTERVALS')
     CONTROLLER_IMAGE = os.getenv('CONTROLLER_IMAGE')
     SCHEDULER_IMAGE = os.getenv('SCHEDULER_IMAGE')
 
@@ -39,7 +40,7 @@ def main():
     logging.info("Running controller service")
     try:
         controller_container_id = subprocess.check_output(
-            f'docker run -d -e SCHEDULER_IMAGE={SCHEDULER_IMAGE} -it -v "/var/run/docker.sock:/var/run/docker.sock:rw" -p {PORT}:80 {CONTROLLER_IMAGE}',
+            f'docker run -d -e SCHEDULER_IMAGE={SCHEDULER_IMAGE} -e CONTROLLER_PORT={PORT} -it -v "/var/run/docker.sock:/var/run/docker.sock:rw" -p {PORT}:80 {CONTROLLER_IMAGE}',
             shell=True).decode("utf-8").strip()
     except subprocess.SubprocessError:
         logging.warning('Error running controller service; is the PORT taken?')
@@ -57,12 +58,12 @@ def main():
     logging.info('Run scheduler service')
     try:
         subprocess.check_output(
-            f'docker run -d -e controller_ip={BASE_IP} -e controller_port={PORT} -e interval={INTERVALS} scheduler:latest',
+            f'docker run -d -e CONTROLLER_IP={BASE_IP} -e CONTROLLER_PORT={PORT} -e INTERVAL={INTERVAL} scheduler:latest',
             shell=True)
     except subprocess.SubprocessError:
         logging.warning("Error running scheduler service")
     logging.info(
-        f'Scheduler service running, sending reset request every {INTERVALS} seconds'
+        f'Scheduler service running, sending reset request every {INTERVAL} seconds'
     )
     logging.info(
         f"To log controller server responses, run docker attach {os.getenv('CONTROLLER_CONTAINER_ID')}"

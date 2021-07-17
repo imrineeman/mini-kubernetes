@@ -8,18 +8,17 @@ RUN apk add --update docker openrc
 RUN rc-update add docker boot
 RUN pip3 install requests
 
-EXPOSE 6000
 WORKDIR /app
-ARG CONTROLLER_IP
-ARG CONTROLLER_PORT
-ARG INTERVAL
+ARG controller_ip
+ARG controller_port
+ARG interval
 
-ENV controller_ip = CONTROLLER_IP
-ENV controller_port = CONTROLLER_PORT
-ENV interval = INTERVAL
+ENV CONTROLLER_IP = controller_ip
+ENV CONTROLLER_PORT = controller_port
+ENV INTERVAL = interval
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 COPY . .
 
-CMD python3 scheduler.py "$controller_ip" "$controller_port" "$interval"
+CMD python3 scheduler.py "$CONTROLLER_IP" "$CONTROLLER_PORT" "$INTERVAL"
