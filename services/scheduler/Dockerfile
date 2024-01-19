@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.9-alpine
+FROM python:3.13.0a3-alpine
 
 RUN apk update
 RUN apk add python3-dev
