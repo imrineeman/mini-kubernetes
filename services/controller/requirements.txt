@@ -16,3 +16,4 @@ six==1.16.0
 tzlocal==2.1
 urllib3==1.26.6
 Werkzeug==2.0.1
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
